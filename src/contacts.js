@@ -24,9 +24,13 @@ export async function removeContact(contactId) {
   const removedContact = contacts.find(
     ({ id }) => id.toString() === contactId.toString()
   );
-  const newContacts = contacts.filter(({ id }) => id !== contactId);
+  if (!removedContact) return null;
+
+  const newContacts = contacts.filter(
+    ({ id }) => id.toString() !== contactId.toString()
+  );
   await fs.writeFile(contactsPath, JSON.stringify(newContacts));
-  return removedContact || null;
+  return removedContact;
 }
 
 export async function addContact(name, email, phone) {
